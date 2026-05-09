@@ -1,26 +1,58 @@
 package com.example.shop.order;
 
+import com.example.shop.member.Member;
+import com.example.shop.product.Product;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "orders")
+@NoArgsConstructor
 @Getter
 @Setter
 public class Order {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_id")
     private Long id;
-    private Long memberId;      // 주문한 회원 ID
-    private Long productId;     // 주문한 상품 ID
-    private int orderQuantity;  // 주문 수량
-    private int totalPrice;     // 총 주문 가격
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member memberId;
+
+    @Column(name = "order_date")
     private LocalDateTime orderDate; // 주문 시간
 
-    public Order(Long memberId, Long productId, int orderQuantity, int totalPrice) {
+    @Column(name = "total_price")
+    private int totalPrice;     // 총 주문 가격
+
+    @Column(name = "point_used")
+    private int pointused;
+
+    @Column(name = "cash_amount")
+    private int cashAmount;
+
+    @Column(name = "status", length = 25)
+    private String status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Product productId;     // 주문한 상품 ID
+
+    @Column(name = "order_quantity")
+    private int orderQuantity;  // 주문 수량
+
+    public Order(Member memberId, Product productId, int orderQuantity, int totalPrice) {
         this.memberId = memberId;
         this.productId = productId;
         this.orderQuantity = orderQuantity;
         this.totalPrice = totalPrice;
-        this.orderDate = LocalDateTime.now(); // 생성 시점의 시간 저장
+        this.orderDate = LocalDateTime.now();
     }
+
 }

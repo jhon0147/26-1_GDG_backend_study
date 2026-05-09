@@ -2,6 +2,7 @@ package com.example.shop.product;
 
 import com.example.shop.product.dto.ProductCreateRequest;
 import com.example.shop.product.dto.ProductUpdateRequest;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     // 상품 등록
+    @Transactional
     public Long createProduct(ProductCreateRequest request) {
         Product product = new Product(
                 request.getName(),
@@ -26,11 +28,13 @@ public class ProductService {
     }
 
     // 전체 상품 조회
+    @Transactional
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
     // 특정 상품 조회
+    @Transactional
     public Product getProductById(Long id) {
         Product product = productRepository.findById(id);
 
@@ -42,6 +46,7 @@ public class ProductService {
     }
 
     // 상품 정보 수정
+    @Transactional
     public void updateProduct(Long id, ProductUpdateRequest request) {
         Product product = productRepository.findById(id);
 
@@ -54,6 +59,7 @@ public class ProductService {
     }
 
     // 상품 삭제
+    @Transactional
     public void deleteProduct(Long id) {
         Product product = productRepository.findById(id);
 

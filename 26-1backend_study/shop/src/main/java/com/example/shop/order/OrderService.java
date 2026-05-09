@@ -36,8 +36,8 @@ public class OrderService {
         // 4. 총 가격 계산 및 주문 생성
         int totalPrice = product.getPrice() * request.getCount();
         Order order = new Order(
-                member.getId(),
-                product.getId(),
+                member,
+                product,
                 request.getCount(),
                 totalPrice
         );
@@ -65,7 +65,7 @@ public class OrderService {
         }
 
         // 2. 상품 재고 원복
-        Product product = productRepository.findById(order.getProductId());
+        Product product = order.getProductId();
         if (product != null) {
             product.setStockQuantity(product.getStockQuantity() + order.getOrderQuantity());
         }
